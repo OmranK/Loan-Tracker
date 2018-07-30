@@ -20,10 +20,18 @@ class TransactionDetailTVC: UITableViewController, UITextFieldDelegate, Transact
     
     var isEditingLoanDate: Bool = false {
         didSet {
-            tableView.beginUpdates()
-            tableView.endUpdates()
+            if isEditingLoanDate == true {
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.5, delay: 0, options: [.allowUserInteraction], animations: {
+                    self.tableView.beginUpdates()
+                    self.tableView.endUpdates()
+                }, completion: nil)
+            } else {
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
         }
     }
+    
     let dateRow = 2
     let datePickerRow = 3
     let defaultHeight : CGFloat = 44
@@ -54,6 +62,7 @@ class TransactionDetailTVC: UITableViewController, UITextFieldDelegate, Transact
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard indexPath.row == datePickerRow else { return defaultHeight }
         if isEditingLoanDate {
+            
             return 216.0
         }
         return 0
